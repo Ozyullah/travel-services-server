@@ -20,6 +20,7 @@ async function run(){
     try {
         const servicesCollection= client.db("travelData").collection("services");
 
+        const reviewCollections=client.db("travelData").collection("reviews")
 
         app.get('/systems', async(req, res)=>{
             const query={};
@@ -43,6 +44,47 @@ async function run(){
             const rolles =await servicesCollection.findOne(query);
             res.send(rolles)
         })
+
+        app.post('/services', async(req, res)=>{
+            const stead=req.body;
+            const effect =await servicesCollection.insertOne(stead);
+            res.send(effect)
+        })
+
+
+        // Review Sectore
+
+        app.post('/reviews', async(req, res)=>{
+            const reviw =req.body;
+            const result =await reviewCollections.insertOne(reviw);
+            res.send(result);
+        })
+
+        app.get('/reviews', async(req, res)=>{
+            let query={};
+            if(req.query.email){
+                query={
+                    email:req.query.email
+                }
+            }
+            const aqua =reviewCollections.find(query);
+            const files =await aqua.toArray()
+            res.send(files)
+        })
+
+        app.get('/opinion', async(req, res)=>{
+            let query ={};
+            if(req.query.service_id){
+                query={
+                    service_id:req.query.service_id
+                }
+            }
+            const single=reviewCollections.find(query);
+            const desires =await single.toArray();
+            res.send(desires)
+        })
+
+        
  
     }
     finally{
