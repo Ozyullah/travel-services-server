@@ -98,7 +98,6 @@ async function run(){
             const updateDoc ={
                 $set:{
                     descriptions
-
                 }
             }
             const result= await reviewCollections.updateOne(query, updateDoc);
